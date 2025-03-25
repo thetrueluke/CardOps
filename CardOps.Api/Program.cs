@@ -1,4 +1,3 @@
-using CardOps.Api;
 using CardOps.Core.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +9,6 @@ var host = new HostBuilder()
     {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
-        services.AddSingleton<ActionDiscoveryService>();
         services.AddSingleton<CardService>();
     })
     .Build();
