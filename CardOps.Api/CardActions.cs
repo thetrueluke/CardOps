@@ -2,6 +2,7 @@ using CardOps.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 
 namespace CardOps.Api
@@ -9,7 +10,10 @@ namespace CardOps.Api
     public class CardActions(ILogger<CardActions> logger, CardService cardService)
     {
         [Function(nameof(CardActions))]
-        public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/{userId}/cards/{cardNumber}/actions")] HttpRequest req, string userId, string cardNumber)
+        [OpenApiOperation(operationId: nameof(RunAsync))]
+        [OpenApiParameter(nameof(userId))]
+        [OpenApiParameter(nameof(cardNumber))]
+        public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = $"users/{{{nameof(userId)}}}/cards/{{{nameof(cardNumber)}}}/actions")] HttpRequest req, string userId, string cardNumber)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
